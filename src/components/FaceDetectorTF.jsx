@@ -1,4 +1,3 @@
-// src/components/FaceDetectorTF.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
@@ -14,9 +13,10 @@ export default function FaceDetectorTF() {
         await tf.setBackend('webgl');
         await tf.ready();
 
-        // Usamos directamente los valores como string, más seguro
         const model = await faceLandmarksDetection.load(
-          faceLandmarksDetection.SupportedPackages.mediapipeFacemesh || 'mediapipeFacemesh'
+          faceLandmarksDetection.SupportedPackages
+            ? faceLandmarksDetection.SupportedPackages.mediapipeFacemesh
+            : 'mediapipeFacemesh'
         );
 
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
