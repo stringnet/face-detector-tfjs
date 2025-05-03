@@ -14,8 +14,9 @@ export default function FaceDetectorTF() {
         await tf.setBackend('webgl');
         await tf.ready();
 
+        // Usamos directamente los valores como string, más seguro
         const model = await faceLandmarksDetection.load(
-          faceLandmarksDetection.SupportedPackages.mediapipeFacemesh
+          faceLandmarksDetection.SupportedPackages.mediapipeFacemesh || 'mediapipeFacemesh'
         );
 
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
