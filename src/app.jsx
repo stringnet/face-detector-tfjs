@@ -1,5 +1,5 @@
 import React from 'react';
-import FaceDetector from './components/FaceDetector';
+import FaceDetector from './components/FaceDetectorTF';
 
 function App() {
   return (
