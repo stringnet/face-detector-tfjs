@@ -1,26 +1,23 @@
-# Usa Node con Alpine
+# Imagen base con Node.js
 FROM node:20-alpine
 
-# Crea el directorio de trabajo
+# Directorio de trabajo
 WORKDIR /app
 
-# Copia todo el contenido del proyecto
+# Copiar archivos del proyecto
 COPY . .
 
-# Instala las dependencias del proyecto
+# Instalar dependencias
 RUN npm install
 
-# Compila el proyecto Vite
+# Compilar el proyecto Vite (React + TensorFlow.js)
 RUN npm run build
 
-# Instala Express para servir los archivos
-RUN npm install express
+# Instalar servidor estático para producción
+RUN npm install -g http-server
 
-# Copia el archivo de servidor
-COPY serve.js .
-
-# Expone el puerto
+# Exponer el puerto 3000
 EXPOSE 3000
 
-# Ejecuta el servidor Express
-CMD ["node", "serve.js"]
+# Servir contenido desde /dist
+CMD ["http-server", "dist", "-p", "3000"]
