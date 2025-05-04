@@ -19,5 +19,5 @@ RUN npm install -g serve
 # Exponemos el puerto
 EXPOSE 3000
 
-# Ejecutamos el servidor de producción
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Ejecutamos el servidor de producción con configuración CSP personalizada
+CMD ["serve", "-s", "dist", "-l", "3000", "--config", "serve.json"]
