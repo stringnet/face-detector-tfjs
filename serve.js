@@ -1,0 +1,27 @@
+// serve.js
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = 3000;
+
+// Agrega encabezados CSP para permitir TensorFlow.js
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src *"
+  );
+  next();
+});
+
+// Servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Redirigir todas las rutas al index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+// Iniciar servidor
+app.listen(port, () => {
+  console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
+});
