@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "node server.js"
+    "start": "node serve.js"
   },
   "dependencies": {
     "@tensorflow-models/face-landmarks-detection": "^1.0.4",
