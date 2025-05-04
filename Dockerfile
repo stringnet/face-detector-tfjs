@@ -17,10 +17,10 @@ RUN npm run build
 RUN npm install express
 
 # Copia el archivo de servidor
-COPY server.js .
+COPY serve.js .
 
 # Expone el puerto
 EXPOSE 3000
 
 # Ejecuta el servidor Express
-CMD ["node", "server.js"]
+CMD ["node", "serve.js"]
