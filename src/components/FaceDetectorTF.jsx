@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
-import * as faceDetection from '@tensorflow-models/face-detection';
+import * as blazeface from '@tensorflow-models/blazeface';
 import '@tensorflow/tfjs-backend-webgl';
 
 const FaceDetectorTF = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const detectorRef = useRef(null);
+  const modelRef = useRef(null);
 
   const [status, setStatus] = useState('⏳ Cargando...');
   const [message, setMessage] = useState('');
@@ -18,16 +18,10 @@ const FaceDetectorTF = () => {
         await tf.setBackend('webgl');
         await tf.ready();
 
-        setStatus("📦 Cargando modelo...");
-        const model = await faceDetection.createDetector(
-          faceDetection.SupportedModels.MediaPipeFaceDetector,
-          {
-            runtime: 'tfjs',
-            maxFaces: 1,
-          }
-        );
+        setStatus("📦 Cargando modelo BlazeFace...");
+        const model = await blazeface.load();
+        modelRef.current = model;
 
-        detectorRef.current = model;
         setStatus("✅ Modelo cargado");
         startVideo();
       } catch (err) {
@@ -57,21 +51,23 @@ const FaceDetectorTF = () => {
       const detect = async () => {
         if (
           videoRef.current &&
-          detectorRef.current &&
+          modelRef.current &&
           videoRef.current.readyState === 4
         ) {
-          const faces = await detectorRef.current.estimateFaces(videoRef.current);
-
+          const predictions = await modelRef.current.estimateFaces(videoRef.current, false);
           const canvas = canvasRef.current;
           const context = canvas.getContext('2d');
           context.clearRect(0, 0, canvas.width, canvas.height);
 
-          if (faces.length > 0) {
+          if (predictions.length > 0) {
             setMessage('✅ Rostro detectado');
-            faces.forEach(face => {
-              const box = face.box;
+            predictions.forEach(prediction => {
+              const start = prediction.topLeft;
+              const end = prediction.bottomRight;
+              const size = [end[0] - start[0], end[1] - start[1]];
+
               context.beginPath();
-              context.rect(box.xMin, box.yMin, box.width, box.height);
+              context.rect(start[0], start[1], size[0], size[1]);
               context.strokeStyle = 'lime';
               context.lineWidth = 2;
               context.stroke();
