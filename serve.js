@@ -6,9 +6,14 @@ const port = 3000;
 // ✅ CSP extendido para permitir Google Fonts
 app.use((req, res, next) => {
   res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-eval'; img-src 'self' data: blob:; connect-src *"
-  );
+  "Content-Security-Policy",
+  "default-src 'self'; " +
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+  "font-src 'self' https://fonts.gstatic.com; " +
+  "script-src 'self' 'unsafe-eval'; " +
+  "img-src 'self' data: blob:; " +
+  "connect-src 'self' https://tfhub.dev https://storage.googleapis.com;"
+);
   next();
 });
 
