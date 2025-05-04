@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
-import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
+import * as faceDetection from '@tensorflow-models/face-detection';
 import '@tensorflow/tfjs-backend-webgl';
 
 const FaceDetectorTF = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const modelRef = useRef(null);
+  const detectorRef = useRef(null);
 
   const [status, setStatus] = useState('⏳ Cargando...');
   const [message, setMessage] = useState('');
@@ -19,15 +19,15 @@ const FaceDetectorTF = () => {
         await tf.ready();
 
         setStatus("📦 Cargando modelo...");
-        const { SupportedPackages } = faceLandmarksDetection;
-        const model = await faceLandmarksDetection.load(
-          SupportedPackages.mediapipeFacemesh,
+        const model = await faceDetection.createDetector(
+          faceDetection.SupportedModels.MediaPipeFaceDetector,
           {
+            runtime: 'tfjs',
             maxFaces: 1,
-            shouldLoadIrisModel: false,
           }
         );
-        modelRef.current = model;
+
+        detectorRef.current = model;
         setStatus("✅ Modelo cargado");
         startVideo();
       } catch (err) {
@@ -57,27 +57,24 @@ const FaceDetectorTF = () => {
       const detect = async () => {
         if (
           videoRef.current &&
-          modelRef.current &&
+          detectorRef.current &&
           videoRef.current.readyState === 4
         ) {
-          const predictions = await modelRef.current.estimateFaces({
-            input: videoRef.current,
-          });
+          const faces = await detectorRef.current.estimateFaces(videoRef.current);
 
           const canvas = canvasRef.current;
           const context = canvas.getContext('2d');
           context.clearRect(0, 0, canvas.width, canvas.height);
 
-          if (predictions.length > 0) {
+          if (faces.length > 0) {
             setMessage('✅ Rostro detectado');
-            predictions.forEach(pred => {
-              const keypoints = pred.scaledMesh;
+            faces.forEach(face => {
+              const box = face.box;
               context.beginPath();
-              keypoints.forEach(point => {
-                context.arc(point[0], point[1], 1, 0, 2 * Math.PI);
-              });
-              context.fillStyle = 'rgba(0, 255, 0, 0.5)';
-              context.fill();
+              context.rect(box.xMin, box.yMin, box.width, box.height);
+              context.strokeStyle = 'lime';
+              context.lineWidth = 2;
+              context.stroke();
             });
           } else {
             setMessage('🔍 Buscando rostro...');
