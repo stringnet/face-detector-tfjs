@@ -1,14 +1,23 @@
-# Dockerfile
+# Usamos Node con todas las herramientas necesarias
 FROM node:20-alpine
 
+# Creamos el directorio de trabajo
 WORKDIR /app
 
+# Copiamos todo el contenido del proyecto
 COPY . .
 
-RUN npm install && npm run build
+# Instalamos las dependencias
+RUN npm install
 
+# Compilamos el proyecto con Vite
+RUN npm run build
+
+# Instalamos el servidor para producción
 RUN npm install -g serve
 
+# Exponemos el puerto
 EXPOSE 3000
 
+# Ejecutamos el servidor de producción
 CMD ["serve", "-s", "dist", "-l", "3000"]
