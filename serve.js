@@ -1,14 +1,13 @@
-// serve.js
 const express = require('express');
 const path = require('path');
 const app = express();
 const port = 3000;
 
-// Agrega encabezados CSP para permitir TensorFlow.js
+// ✅ CSP extendido para permitir Google Fonts
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src *"
+    "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-eval'; img-src 'self' data: blob:; connect-src *"
   );
   next();
 });
@@ -16,12 +15,11 @@ app.use((req, res, next) => {
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Redirigir todas las rutas al index.html
+// Redirigir cualquier ruta al index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-// Iniciar servidor
 app.listen(port, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
+  console.log(`✅ Servidor corriendo en http://localhost:${port}`);
 });
