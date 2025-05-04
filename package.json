@@ -9,11 +9,11 @@
     "start": "http-server dist -p 3000"
   },
   "dependencies": {
-    "@tensorflow-models/face-detection": "^1.0.1",
-    "@tensorflow/tfjs": "^4.18.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
+  "@tensorflow-models/blazeface": "^0.0.7",
+  "@tensorflow/tfjs": "^4.18.0",
+  "react": "^18.2.0",
+  "react-dom": "^18.2.0"
+},
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
     "vite": "^5.0.0"
