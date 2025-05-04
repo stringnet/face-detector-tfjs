@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { load, SupportedPackages } from '@tensorflow-models/face-landmarks-detection';
+import * as tf from '@tensorflow/tfjs';
+import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
 import '@tensorflow/tfjs-backend-webgl';
 
 const FaceDetectorTF = () => {
@@ -13,11 +14,18 @@ const FaceDetectorTF = () => {
   useEffect(() => {
     const loadModel = async () => {
       try {
+        setStatus("📦 Configurando backend...");
+        await tf.setBackend('webgl');
+        await tf.ready();
+
         setStatus("📦 Cargando modelo...");
-        const model = await load(SupportedPackages.mediapipeFacemesh, {
-          maxFaces: 1,
-          shouldLoadIrisModel: false,
-        });
+        const model = await faceLandmarksDetection.load(
+          faceLandmarksDetection.SupportedPackages.mediapipeFacemesh,
+          {
+            maxFaces: 1,
+            shouldLoadIrisModel: false,
+          }
+        );
         modelRef.current = model;
         setStatus("✅ Modelo cargado");
         startVideo();
