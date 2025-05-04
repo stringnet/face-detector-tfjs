@@ -11,9 +11,9 @@ export default defineConfig({
     },
   },
   server: {
-    host: true,      // Escucha en 0.0.0.0 para permitir conexiones externas
-    port: 3000,      // Puerto para servir la app
-    https: false     // HTTPS se maneja fuera del contenedor, por el proxy (Easypanel)
+    host: '0.0.0.0',  // explícito para despliegue en contenedores
+    port: 3000,
+    https: false,     // manejado por Easypanel / proxy externo
   },
   build: {
     target: 'esnext',
