@@ -20,7 +20,7 @@ const FaceDetectorTF = () => {
 
         setStatus("📦 Cargando modelo...");
         const model = await faceLandmarksDetection.load(
-          faceLandmarksDetection.SupportedPackages.mediapipeFacemesh,
+          faceLandmarksDetection.SupportedPackages.tfjs,
           {
             maxFaces: 1,
             shouldLoadIrisModel: false,
