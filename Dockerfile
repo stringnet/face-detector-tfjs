@@ -7,17 +7,17 @@ WORKDIR /app
 # Copiamos todo el contenido del proyecto
 COPY . .
 
-# Instalamos las dependencias
+# Instalamos las dependencias del proyecto
 RUN npm install
 
 # Compilamos el proyecto con Vite
 RUN npm run build
 
-# Instalamos el servidor para producción
-RUN npm install -g serve
+# Instalamos el servidor HTTP simple
+RUN npm install -g http-server
 
 # Exponemos el puerto
 EXPOSE 3000
 
-# Ejecutamos el servidor de producción con configuración CSP personalizada
-CMD ["serve", "-s", "dist", "-l", "3000", "--config", "serve.json"]
+# Ejecutamos el servidor de producción desde la carpeta dist
+CMD ["http-server", "dist", "-p", "3000"]
