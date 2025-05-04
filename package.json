@@ -6,19 +6,17 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "serve -s dist -l 3000"
+    "start": "http-server dist -p 3000"
   },
   "dependencies": {
     "@tensorflow-models/face-landmarks-detection": "^1.0.4",
     "@tensorflow/tfjs": "^4.18.0",
-    "@tensorflow/tfjs-backend-webgl": "^4.18.0",
     "@mediapipe/face_mesh": "^0.4.1633559619",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
-    "vite": "^5.0.0",
-    "serve": "^14.2.0"
+    "vite": "^5.0.0"
   }
 }
